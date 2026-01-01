@@ -19,6 +19,12 @@
       "confidence": "high"
     },
     {
+      "name": "Amazon AWS Secret Key",
+      "regex": "(?i)aws(.{0,20})?(?-i)['\\\"|=]([0-9a-zA-Z/+=]{40})['\\\"]",
+      "severity": "high",
+      "confidence": "medium"
+    },
+    {
       "name": "Amazon MWS Auth Token",
       "regex": "amzn\\.mws\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
       "severity": "high",
@@ -31,8 +37,26 @@
       "confidence": "high"
     },
     {
+      "name": "Facebook OAuth",
+      "regex": "[f|F][a|A][c|C][e|E][b|B][o|O][o|O][k|K].*['|\\\"][0-9a-f]{32}['|\\\"]",
+      "severity": "high",
+      "confidence": "medium"
+    },
+    {
       "name": "GitHub Personal Access Token",
       "regex": "ghp_[a-zA-Z0-9]{36}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "GitHub OAuth Token",
+      "regex": "gho_[a-zA-Z0-9]{36}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "GitHub App Token",
+      "regex": "(ghu|ghs)_[a-zA-Z0-9]{36}",
       "severity": "high",
       "confidence": "high"
     },
@@ -43,20 +67,164 @@
       "confidence": "high"
     },
     {
+      "name": "Stripe API Key",
+      "regex": "sk_live_[0-9a-zA-Z]{24}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Stripe Publishable Key",
+      "regex": "pk_live_[0-9a-zA-Z]{24}",
+      "severity": "medium",
+      "confidence": "high"
+    },
+    {
+      "name": "Stripe Restricted Key",
+      "regex": "rk_live_[0-9a-zA-Z]{24}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Square Access Token",
+      "regex": "sq0atp-[0-9A-Za-z\\-_]{22}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Square OAuth Secret",
+      "regex": "sq0csp-[0-9A-Za-z\\-_]{43}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Twilio API Key",
+      "regex": "SK[0-9a-fA-F]{32}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
       "name": "Mailgun API Key",
       "regex": "key-[0-9a-zA-Z]{32}",
       "severity": "high",
       "confidence": "high"
     },
     {
-      "name": "Slack Token",
-      "regex": "xox[bapz]-[0-9]{12}-[0-9]{12}-[0-9a-zA-Z]{24}",
+      "name": "SendGrid API Key",
+      "regex": "SG\\.[0-9A-Za-z\\-_]{22}\\.[0-9A-Za-z\\-_]{43}",
       "severity": "high",
       "confidence": "high"
     },
     {
+      "name": "Slack Token",
+      "regex": "xox[baprs]-[0-9]{12}-[0-9]{12}-[0-9a-zA-Z]{24}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Slack Webhook",
+      "regex": "https://hooks\\.slack\\.com/services/T[a-zA-Z0-9_]{8}/B[a-zA-Z0-9_]{8}/[a-zA-Z0-9_]{24}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Azure Storage Account Key",
+      "regex": "(?i)azure(.{0,20})?['\\\"|=]([a-zA-Z0-9/+=]{88})['\\\"]",
+      "severity": "high",
+      "confidence": "medium"
+    },
+    {
+      "name": "Google Cloud Service Account",
+      "regex": "\"type\": \"service_account\"",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Heroku API Key",
+      "regex": "[h|H][e|E][r|R][o|O][k|K][u|U].*[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}",
+      "severity": "high",
+      "confidence": "medium"
+    },
+    {
+      "name": "DigitalOcean OAuth Token",
+      "regex": "dop_v1_[a-f0-9]{64}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "NPM Token",
+      "regex": "npm_[a-zA-Z0-9]{36}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "PyPI API Token",
+      "regex": "pypi-AgEIcHlwaS5vcmc[A-Za-z0-9-_]{70,}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Shopify Access Token",
+      "regex": "shpat_[a-fA-F0-9]{32}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Telegram Bot Token",
+      "regex": "[0-9]{8,10}:[a-zA-Z0-9_-]{35}",
+      "severity": "medium",
+      "confidence": "medium"
+    },
+    {
+      "name": "Discord Bot Token",
+      "regex": "[MN][a-zA-Z\\d]{23}\\.[\\w-]{6}\\.[\\w-]{27}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "JWT Token",
+      "regex": "eyJ[A-Za-z0-9-_=]+\\.eyJ[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_.+/=]*",
+      "severity": "medium",
+      "confidence": "medium"
+    },
+    {
+      "name": "RSA Private Key",
+      "regex": "-----BEGIN RSA PRIVATE KEY-----",
+      "severity": "critical",
+      "confidence": "high"
+    },
+    {
+      "name": "SSH Private Key",
+      "regex": "-----BEGIN OPENSSH PRIVATE KEY-----",
+      "severity": "critical",
+      "confidence": "high"
+    },
+    {
+      "name": "PGP Private Key",
+      "regex": "-----BEGIN PGP PRIVATE KEY BLOCK-----",
+      "severity": "critical",
+      "confidence": "high"
+    },
+    {
+      "name": "Hardcoded Password",
+      "regex": "(?i)(password|passwd|pwd)(.{0,20})[=:]['\\\"]([^'\\\"\\s]{4,})['\\\"]",
+      "severity": "high",
+      "confidence": "medium"
+    },
+    {
+      "name": "Hardcoded API Key",
+      "regex": "(?i)(api[_-]?key|apikey)(.{0,20})[=:]['\\\"]([a-zA-Z0-9_\\-]{8,})['\\\"]",
+      "severity": "high",
+      "confidence": "medium"
+    },
+    {
+      "name": "Hardcoded Auth Token",
+      "regex": "(?i)(auth[_-]?token|authorization)(.{0,20})[=:]['\\\"]([a-zA-Z0-9_\\-]{8,})['\\\"]",
+      "severity": "high",
+      "confidence": "medium"
+    },
+    {
       "name": "Generic Secret",
-      "regex": "(?i)secret(.{0,20})(['\"|:=])(.{0,20})",
+      "regex": "(?i)secret(.{0,20})(['\\\"|:=])(.{8,})",
       "severity": "low",
       "confidence": "low"
     }

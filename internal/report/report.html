@@ -54,10 +54,22 @@
             font-weight: bold;
         }
 
+        .severity-critical {
+            color: #8b0000;
+            font-weight: bold;
+        }
+
         code {
             background-color: #eee;
             padding: 2px 4px;
             border-radius: 3px;
+        }
+
+        .masvs {
+            background-color: #e7f3ff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
         }
     </style>
 </head>
@@ -74,6 +86,7 @@
             <th>Line</th>
             <th>Severity</th>
             <th>Confidence</th>
+            <th>MASVS</th>
             <th>Content</th>
         </tr>
         {{range .Results}}
@@ -83,6 +96,7 @@
             <td>{{.Line}}</td>
             <td><span class="severity-{{.Severity}}">{{.Severity}}</span></td>
             <td>{{.Confidence}}</td>
+            <td><span class="masvs">{{.MASVS}}</span></td>
             <td><code>{{.Content}}</code></td>
         </tr>
         {{end}}
@@ -95,12 +109,14 @@
             <th>Type</th>
             <th>Severity</th>
             <th>Description</th>
+            <th>MASVS</th>
         </tr>
         {{range .Findings}}
         <tr>
             <td>{{.Type}}</td>
             <td><span class="severity-{{.Severity}}">{{.Severity}}</span></td>
             <td>{{.Description}}</td>
+            <td><span class="masvs">{{.MASVS}}</span></td>
         </tr>
         {{end}}
     </table>

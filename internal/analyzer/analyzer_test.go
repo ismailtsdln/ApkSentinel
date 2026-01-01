@@ -24,7 +24,7 @@ func TestAnalyzeManifest(t *testing.T) {
 		t.Fatalf("AnalyzeManifest failed: %v", err)
 	}
 
-	expectedFindings := 4 // 1 permission, 1 debuggable, 1 allowBackup, 1 exported activity
+	expectedFindings := 6 // 1 permission, 1 debuggable, 1 allowBackup, 1 cleartext, 1 backup content, 1 exported activity without permission
 	if len(findings) != expectedFindings {
 		t.Errorf("Expected %d findings, got %d", expectedFindings, len(findings))
 	}

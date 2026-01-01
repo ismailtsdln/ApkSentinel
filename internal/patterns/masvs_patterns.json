@@ -1,0 +1,144 @@
+{
+    "patterns": [
+        {
+            "name": "Hardcoded HTTP URL",
+            "regex": "http://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
+            "severity": "medium",
+            "confidence": "high",
+            "masvs": "MASVS-NETWORK-1"
+        },
+        {
+            "name": "Hardcoded IP Address",
+            "regex": "\\b(?:[0-9]{1,3}\\.){3}[0-9]{1,3}\\b",
+            "severity": "medium",
+            "confidence": "medium",
+            "masvs": "MASVS-STORAGE-2"
+        },
+        {
+            "name": "Insecure File Mode - WORLD_READABLE",
+            "regex": "MODE_WORLD_READABLE",
+            "severity": "high",
+            "confidence": "high",
+            "masvs": "MASVS-STORAGE-1"
+        },
+        {
+            "name": "Insecure File Mode - WORLD_WRITEABLE",
+            "regex": "MODE_WORLD_WRITEABLE",
+            "severity": "high",
+            "confidence": "high",
+            "masvs": "MASVS-STORAGE-1"
+        },
+        {
+            "name": "WebView JavaScript Enabled",
+            "regex": "setJavaScriptEnabled\\(true\\)",
+            "severity": "medium",
+            "confidence": "high",
+            "masvs": "MASVS-PLATFORM-2"
+        },
+        {
+            "name": "WebView File Access Enabled",
+            "regex": "setAllowFileAccess\\(true\\)",
+            "severity": "medium",
+            "confidence": "high",
+            "masvs": "MASVS-PLATFORM-2"
+        },
+        {
+            "name": "WebView Universal Access From File URLs",
+            "regex": "setAllowUniversalAccessFromFileURLs\\(true\\)",
+            "severity": "high",
+            "confidence": "high",
+            "masvs": "MASVS-PLATFORM-2"
+        },
+        {
+            "name": "Insecure Random Number Generator",
+            "regex": "new Random\\(|Math\\.random\\(\\)",
+            "severity": "medium",
+            "confidence": "medium",
+            "masvs": "MASVS-CRYPTO-1"
+        },
+        {
+            "name": "Weak Cryptographic Algorithm - DES",
+            "regex": "(DES/|DESede/|3DES)",
+            "severity": "high",
+            "confidence": "high",
+            "masvs": "MASVS-CRYPTO-1"
+        },
+        {
+            "name": "Weak Cryptographic Algorithm - RC4",
+            "regex": "RC4|ARC4|ARCFOUR",
+            "severity": "high",
+            "confidence": "high",
+            "masvs": "MASVS-CRYPTO-1"
+        },
+        {
+            "name": "Weak Cryptographic Algorithm - MD5",
+            "regex": "MessageDigest\\.getInstance\\(['\"]MD5['\"]\\)",
+            "severity": "high",
+            "confidence": "high",
+            "masvs": "MASVS-CRYPTO-1"
+        },
+        {
+            "name": "Weak Cryptographic Algorithm - SHA1",
+            "regex": "MessageDigest\\.getInstance\\(['\"]SHA-1['\"]\\)|MessageDigest\\.getInstance\\(['\"]SHA1['\"]\\)",
+            "severity": "medium",
+            "confidence": "high",
+            "masvs": "MASVS-CRYPTO-1"
+        },
+        {
+            "name": "Insecure TLS/SSL - TrustAllX509TrustManager",
+            "regex": "TrustAllX509TrustManager|X509TrustManager.*checkServerTrusted.*\\{\\s*\\}",
+            "severity": "critical",
+            "confidence": "high",
+            "masvs": "MASVS-NETWORK-1"
+        },
+        {
+            "name": "Insecure TLS/SSL - HostnameVerifier AllowAll",
+            "regex": "ALLOW_ALL_HOSTNAME_VERIFIER|AllowAllHostnameVerifier",
+            "severity": "critical",
+            "confidence": "high",
+            "masvs": "MASVS-NETWORK-1"
+        },
+        {
+            "name": "SQL Injection Risk - Raw Query",
+            "regex": "rawQuery\\(|execSQL\\(",
+            "severity": "medium",
+            "confidence": "low",
+            "masvs": "MASVS-CODE-4"
+        },
+        {
+            "name": "Intent Hijacking Risk - Implicit Intent",
+            "regex": "new Intent\\(\\)",
+            "severity": "low",
+            "confidence": "low",
+            "masvs": "MASVS-PLATFORM-1"
+        },
+        {
+            "name": "Logs - Potential Information Leakage",
+            "regex": "Log\\.(v|d|i|w|e)\\(",
+            "severity": "low",
+            "confidence": "low",
+            "masvs": "MASVS-STORAGE-2"
+        },
+        {
+            "name": "Dynamic Code Loading - DexClassLoader",
+            "regex": "DexClassLoader|PathClassLoader",
+            "severity": "high",
+            "confidence": "high",
+            "masvs": "MASVS-CODE-2"
+        },
+        {
+            "name": "Native Code Loading - System.loadLibrary",
+            "regex": "System\\.loadLibrary|System\\.load\\(",
+            "severity": "medium",
+            "confidence": "high",
+            "masvs": "MASVS-CODE-2"
+        },
+        {
+            "name": "Reflection Usage",
+            "regex": "Class\\.forName\\(|getDeclaredMethod\\(|getMethod\\(",
+            "severity": "low",
+            "confidence": "medium",
+            "masvs": "MASVS-RESILIENCE-4"
+        }
+    ]
+}
