@@ -1,0 +1,25 @@
+image: golang:1.24
+
+stages:
+  - build
+  - scan
+
+build_job:
+  stage: build
+  script:
+    - go build -v -o apk-sentinel cmd/apk-sentinel.go
+  artifacts:
+    paths:
+      - apk-sentinel
+
+scan_job:
+  stage: scan
+  before_script:
+    - apt-get update && apt-get install -y jadx
+  script:
+    - ./apk-sentinel --help
+    # Example scan:
+    # - ./apk-sentinel -i your-app.apk -o results -f both
+  artifacts:
+    paths:
+      - report/

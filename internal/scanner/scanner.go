@@ -40,30 +40,56 @@ type Scanner struct {
 	context  *regexp.Regexp
 }
 
-// NewScanner initializes a Scanner with patterns from a JSON file.
-func NewScanner(patternFilePath string) (*Scanner, error) {
-	data, err := os.ReadFile(patternFilePath)
+// NewScanner initializes a Scanner with patterns from one or more JSON files.
+func NewScanner(patternPath string) (*Scanner, error) {
+	var patternFiles []string
+
+	info, err := os.Stat(patternPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read pattern file: %w", err)
+		return nil, fmt.Errorf("failed to access pattern path: %w", err)
 	}
 
-	var config struct {
-		Patterns []Pattern `json:"patterns"`
-	}
-	if err := json.Unmarshal(data, &config); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal patterns: %w", err)
-	}
-
-	for i := range config.Patterns {
-		re, err := regexp.Compile(config.Patterns[i].Regex)
+	if info.IsDir() {
+		files, err := os.ReadDir(patternPath)
 		if err != nil {
-			return nil, fmt.Errorf("invalid regex for pattern %s: %w", config.Patterns[i].Name, err)
+			return nil, fmt.Errorf("failed to read pattern directory: %w", err)
 		}
-		config.Patterns[i].Compiled = re
+		for _, f := range files {
+			if !f.IsDir() && filepath.Ext(f.Name()) == ".json" {
+				patternFiles = append(patternFiles, filepath.Join(patternPath, f.Name()))
+			}
+		}
+	} else {
+		patternFiles = append(patternFiles, patternPath)
+	}
+
+	var allPatterns []Pattern
+	for _, pf := range patternFiles {
+		data, err := os.ReadFile(pf)
+		if err != nil {
+			continue // Skip unreadable files
+		}
+
+		var config struct {
+			Patterns []Pattern `json:"patterns"`
+		}
+		if err := json.Unmarshal(data, &config); err == nil {
+			for i := range config.Patterns {
+				re, err := regexp.Compile(config.Patterns[i].Regex)
+				if err == nil {
+					config.Patterns[i].Compiled = re
+					allPatterns = append(allPatterns, config.Patterns[i])
+				}
+			}
+		}
+	}
+
+	if len(allPatterns) == 0 {
+		return nil, fmt.Errorf("no valid patterns found in %s", patternPath)
 	}
 
 	return &Scanner{
-		Patterns: config.Patterns,
+		Patterns: allPatterns,
 		resolver: analyzer.NewObfuscationResolver(),
 		context:  regexp.MustCompile(`(?i)(api|key|secret|token|auth|pwd|pass|private|access)`),
 	}, nil

@@ -47,8 +47,8 @@ detect hard-coded secrets, API keys, and sensitive URLs in Android applications.
 		// 2. Scan
 		patternFile := customPatterns
 		if patternFile == "" {
-			// fallback to default patterns
-			patternFile = "internal/patterns/default_patterns.json"
+			// fallback to default patterns directory
+			patternFile = "internal/patterns"
 		}
 
 		s, err := scanner.NewScanner(patternFile)

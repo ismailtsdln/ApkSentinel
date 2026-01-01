@@ -1,0 +1,32 @@
+name: ApkSentinel Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.25'
+
+      - name: Install jadx
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jadx
+
+      - name: Build ApkSentinel
+        run: go build -v -o apk-sentinel cmd/apk-sentinel.go
+
+      - name: Run Scan
+        run: |
+          # Example scan on a sample APK if available, or just test build
+          # ./apk-sentinel -i samples/test.apk -o results -f both
+          ./apk-sentinel --help
