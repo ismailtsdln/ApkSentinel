@@ -1,0 +1,64 @@
+{
+  "patterns": [
+    {
+      "name": "Google API Key",
+      "regex": "AIza[0-9A-Za-z-_]{35}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Firebase URL",
+      "regex": ".*\\.firebaseio\\.com",
+      "severity": "medium",
+      "confidence": "high"
+    },
+    {
+      "name": "Amazon AWS Access Key ID",
+      "regex": "AKIA[0-9A-Z]{16}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Amazon MWS Auth Token",
+      "regex": "amzn\\.mws\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Facebook Access Token",
+      "regex": "EAACEdEose0cBA[0-9A-Za-z]+",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "GitHub Personal Access Token",
+      "regex": "ghp_[a-zA-Z0-9]{36}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "PayPal Braintree Access Token",
+      "regex": "access_token\\$production\\$[0-9a-z]{16}\\$[0-9a-f]{32}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Mailgun API Key",
+      "regex": "key-[0-9a-zA-Z]{32}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Slack Token",
+      "regex": "xox[bapz]-[0-9]{12}-[0-9]{12}-[0-9a-zA-Z]{24}",
+      "severity": "high",
+      "confidence": "high"
+    },
+    {
+      "name": "Generic Secret",
+      "regex": "(?i)secret(.{0,20})(['\"|:=])(.{0,20})",
+      "severity": "low",
+      "confidence": "low"
+    }
+  ]
+}
