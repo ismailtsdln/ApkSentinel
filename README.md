@@ -242,7 +242,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Ismail Tasdelen**
 
 - GitHub: [@ismailtsdln](https://github.com/ismailtsdln)
-- Twitter: [@ismailtsdln](https://twitter.com/ismailtsdln)
+- LinkedIn: [ismailtasdelen](https://www.linkedin.com/in/ismailtasdelen/)
 
 ---
 
