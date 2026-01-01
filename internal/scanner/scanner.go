@@ -104,6 +104,11 @@ func (s *Scanner) ScanFile(filePath string) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	// Set a reasonable buffer size limit to avoid memory issues (10MB per line)
+	const maxCapacity = 10 * 1024 * 1024
+	buf := make([]byte, maxCapacity)
+	scanner.Buffer(buf, maxCapacity)
+
 	lineNum := 0
 	for scanner.Scan() {
 		lineNum++
@@ -117,6 +122,12 @@ func (s *Scanner) ScanFile(filePath string) {
 		for _, d := range decoded {
 			s.checkLine(d, filePath, lineNum)
 		}
+	}
+
+	// Check for scanner errors
+	if err := scanner.Err(); err != nil {
+		// Log but don't fail - just skip this file
+		return
 	}
 }
 

@@ -30,9 +30,22 @@ detect hard-coded secrets, API keys, and sensitive URLs in Android applications.
 	Run: func(cmd *cobra.Command, args []string) {
 		utils.PrintBanner()
 
+		// Validation
 		if inputPath == "" {
 			utils.Error("Input APK path is required.")
 			cmd.Help()
+			os.Exit(1)
+		}
+
+		// Validate output format
+		if outputFormat != "json" && outputFormat != "html" && outputFormat != "both" {
+			utils.Error("Invalid output format. Must be 'json', 'html', or 'both'.")
+			os.Exit(1)
+		}
+
+		// Ensure output directory exists
+		if err := os.MkdirAll(outputDir, 0755); err != nil {
+			utils.Error("Failed to create output directory: %v", err)
 			os.Exit(1)
 		}
 
@@ -74,7 +87,12 @@ detect hard-coded secrets, API keys, and sensitive URLs in Android applications.
 		var findings []analyzer.SecurityFinding
 		if _, err := os.Stat(manifestPath); err == nil {
 			utils.Info("Analyzing AndroidManifest.xml...")
-			findings, _ = analyzer.AnalyzeManifest(manifestPath)
+			findings, err = analyzer.AnalyzeManifest(manifestPath)
+			if err != nil {
+				utils.Warning("Failed to analyze manifest: %v", err)
+			}
+		} else {
+			utils.Warning("AndroidManifest.xml not found, skipping manifest analysis")
 		}
 
 		// 4. Report
@@ -83,6 +101,9 @@ detect hard-coded secrets, API keys, and sensitive URLs in Android applications.
 			Results:  results,
 			Findings: findings,
 		}
+
+		// Display summary
+		utils.Success("Scan complete! Found %d secrets and %d security findings.", len(results), len(findings))
 
 		if outputFormat == "json" || outputFormat == "both" {
 			if err := report.SaveJSON(r, outputDir); err != nil {

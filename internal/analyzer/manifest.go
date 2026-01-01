@@ -47,10 +47,12 @@ func AnalyzeManifest(manifestPath string) ([]SecurityFinding, error) {
 		})
 	}
 
-	if manifest.Application.AllowBackup != "false" {
+	// AllowBackup should be explicitly set to false for production apps
+	// Empty string means attribute is not set (default is true)
+	if manifest.Application.AllowBackup == "true" || manifest.Application.AllowBackup == "" {
 		findings = append(findings, SecurityFinding{
 			Type:        "Manifest",
-			Description: "Application allows backup (allowBackup is not false)",
+			Description: "Application allows backup (allowBackup should be explicitly false)",
 			Severity:    "medium",
 		})
 	}

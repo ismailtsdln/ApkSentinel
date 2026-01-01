@@ -21,6 +21,11 @@ type Report struct {
 
 // SaveJSON saves the report as a JSON file.
 func SaveJSON(report Report, outputDir string) error {
+	// Ensure output directory exists
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		return fmt.Errorf("failed to create output directory: %w", err)
+	}
+
 	filePath := filepath.Join(outputDir, "report.json")
 	data, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
@@ -99,6 +104,11 @@ const htmlTemplate = `
 
 // SaveHTML saves the report as an HTML file.
 func SaveHTML(report Report, outputDir string) error {
+	// Ensure output directory exists
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		return fmt.Errorf("failed to create output directory: %w", err)
+	}
+
 	filePath := filepath.Join(outputDir, "report.html")
 	tmpl, err := template.New("report").Parse(htmlTemplate)
 	if err != nil {
