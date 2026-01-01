@@ -1,0 +1,52 @@
+{
+    "patterns": [
+        {
+            "name": "Root Detection - RootBeer",
+            "regex": "com\\.scottyab\\.rootbeer",
+            "severity": "medium",
+            "confidence": "high"
+        },
+        {
+            "name": "Root Detection - Su Binary Check",
+            "regex": "/system/bin/su|/system/xbin/su|/sbin/su|/system/sd/xbin/su",
+            "severity": "medium",
+            "confidence": "high"
+        },
+        {
+            "name": "Root Detection - Magisk Check",
+            "regex": "com\\.topjohnwu\\.magisk",
+            "severity": "medium",
+            "confidence": "high"
+        },
+        {
+            "name": "Root Detection - Test-Keys Check",
+            "regex": "ro\\.build\\.tags=test-keys",
+            "severity": "medium",
+            "confidence": "high"
+        },
+        {
+            "name": "SSL Pinning - OkHttp CertificatePinner",
+            "regex": "okhttp3\\.CertificatePinner",
+            "severity": "medium",
+            "confidence": "high"
+        },
+        {
+            "name": "SSL Pinning - TrustKit",
+            "regex": "com\\.datatheorem\\.android\\.trustkit",
+            "severity": "medium",
+            "confidence": "high"
+        },
+        {
+            "name": "SSL Pinning - Custom X509TrustManager",
+            "regex": "checkServerTrusted|checkClientTrusted",
+            "severity": "low",
+            "confidence": "medium"
+        },
+        {
+            "name": "SSL Pinning - Network Security Config",
+            "regex": "android:networkSecurityConfig",
+            "severity": "low",
+            "confidence": "high"
+        }
+    ]
+}

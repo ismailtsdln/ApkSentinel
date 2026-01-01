@@ -14,8 +14,9 @@ type Manifest struct {
 
 // Application represents the application tag in AndroidManifest.xml.
 type Application struct {
-	Debuggable  string `xml:"http://schemas.android.com/apk/res/android debuggable,attr"`
-	AllowBackup string `xml:"http://schemas.android.com/apk/res/android allowBackup,attr"`
+	Debuggable            string `xml:"http://schemas.android.com/apk/res/android debuggable,attr"`
+	AllowBackup           string `xml:"http://schemas.android.com/apk/res/android allowBackup,attr"`
+	NetworkSecurityConfig string `xml:"http://schemas.android.com/apk/res/android networkSecurityConfig,attr"`
 }
 
 // SecurityFinding represents a security issue found in the manifest or resources.
@@ -54,6 +55,14 @@ func AnalyzeManifest(manifestPath string) ([]SecurityFinding, error) {
 			Type:        "Manifest",
 			Description: "Application allows backup (allowBackup should be explicitly false)",
 			Severity:    "medium",
+		})
+	}
+
+	if manifest.Application.NetworkSecurityConfig != "" {
+		findings = append(findings, SecurityFinding{
+			Type:        "Manifest",
+			Description: "Network Security Configuration is defined: " + manifest.Application.NetworkSecurityConfig,
+			Severity:    "info",
 		})
 	}
 
