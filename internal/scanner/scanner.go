@@ -9,6 +9,8 @@ import (
 	"regexp"
 	"sync"
 
+	"runtime"
+
 	"github.com/ismailtsdln/ApkSentinel/internal/analyzer"
 )
 
@@ -33,11 +35,12 @@ type Result struct {
 
 // Scanner handles the scanning of files for sensitive patterns.
 type Scanner struct {
-	Patterns []Pattern
-	Results  []Result
-	mu       sync.Mutex
-	resolver *analyzer.ObfuscationResolver
-	context  *regexp.Regexp
+	Patterns           []Pattern
+	Results            []Result
+	mu                 sync.Mutex
+	resolver           *analyzer.ObfuscationResolver
+	context            *regexp.Regexp
+	excludedExtensions map[string]bool
 }
 
 // NewScanner initializes a Scanner with patterns from one or more JSON files.
@@ -92,6 +95,25 @@ func NewScanner(patternPath string) (*Scanner, error) {
 		Patterns: allPatterns,
 		resolver: analyzer.NewObfuscationResolver(),
 		context:  regexp.MustCompile(`(?i)(api|key|secret|token|auth|pwd|pass|private|access)`),
+		excludedExtensions: map[string]bool{
+			".png":  true,
+			".jpg":  true,
+			".jpeg": true,
+			".gif":  true,
+			".webp": true,
+			".svg":  true,
+			".mp3":  true,
+			".mp4":  true,
+			".wav":  true,
+			".pdf":  true,
+			".dex":  true,
+			".arsc": true,
+			".so":   true,
+			".exe":  true,
+			".dll":  true,
+			".bin":  true,
+			".dat":  true,
+		},
 	}, nil
 }
 
@@ -158,9 +180,10 @@ func (s *Scanner) checkLine(line, filePath string, lineNum int) {
 func (s *Scanner) ScanDirectory(dirPath string) ([]Result, error) {
 	var wg sync.WaitGroup
 	filesChan := make(chan string, 100)
+	numWorkers := runtime.NumCPU() * 2
 
 	// Worker goroutines
-	for i := 0; i < 20; i++ {
+	for i := 0; i < numWorkers; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -176,7 +199,10 @@ func (s *Scanner) ScanDirectory(dirPath string) ([]Result, error) {
 			return err
 		}
 		if !info.IsDir() {
-			filesChan <- path
+			ext := filepath.Ext(path)
+			if !s.excludedExtensions[ext] {
+				filesChan <- path
+			}
 		}
 		return nil
 	})

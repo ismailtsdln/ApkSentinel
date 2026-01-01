@@ -31,8 +31,8 @@ go.work
 Thumbs.db
 
 # Report directories
-report/
-results/
+/report/
+/results/
 
 # Decompiled APK directories
 **/decompiled/

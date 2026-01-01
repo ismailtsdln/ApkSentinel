@@ -3,12 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 
-	"github.com/ismailtsdln/ApkSentinel/internal/analyzer"
-	"github.com/ismailtsdln/ApkSentinel/internal/decompiler"
-	"github.com/ismailtsdln/ApkSentinel/internal/report"
-	"github.com/ismailtsdln/ApkSentinel/internal/scanner"
+	"github.com/ismailtsdln/ApkSentinel/internal/engine"
 	"github.com/ismailtsdln/ApkSentinel/internal/utils"
 	"github.com/spf13/cobra"
 )
@@ -49,72 +45,19 @@ detect hard-coded secrets, API keys, and sensitive URLs in Android applications.
 			os.Exit(1)
 		}
 
-		// 1. Decompile
-		decomp := decompiler.NewDecompiler(jadxPath, filepath.Join(outputDir, "decompiled"))
-		decompiledDir, err := decomp.Decompile(inputPath)
-		if err != nil {
-			utils.Error("Error during decompilation: %v", err)
+		cfg := engine.Config{
+			InputPath:      inputPath,
+			OutputDir:      outputDir,
+			OutputFormat:   outputFormat,
+			CustomPatterns: customPatterns,
+			JadxPath:       jadxPath,
+			Verbose:        verbose,
+		}
+
+		e := engine.NewEngine(cfg)
+		if err := e.Run(); err != nil {
+			utils.Error("Analysis failed: %v", err)
 			os.Exit(1)
-		}
-
-		// 2. Scan
-		patternFile := customPatterns
-		if patternFile == "" {
-			// fallback to default patterns directory
-			patternFile = "internal/patterns"
-		}
-
-		s, err := scanner.NewScanner(patternFile)
-		if err != nil {
-			utils.Error("Error initializing scanner: %v", err)
-			os.Exit(1)
-		}
-
-		utils.Info("Scanning decompiled source code...")
-		results, err := s.ScanDirectory(decompiledDir)
-		if err != nil {
-			utils.Error("Error during scan: %v", err)
-			os.Exit(1)
-		}
-
-		// 3. Manifest Analysis
-		manifestPath := filepath.Join(decompiledDir, "resources", "AndroidManifest.xml")
-		// Sometimes jadx puts it in the root depending on version/config
-		if _, err := os.Stat(manifestPath); os.IsNotExist(err) {
-			manifestPath = filepath.Join(decompiledDir, "AndroidManifest.xml")
-		}
-
-		var findings []analyzer.SecurityFinding
-		if _, err := os.Stat(manifestPath); err == nil {
-			utils.Info("Analyzing AndroidManifest.xml...")
-			findings, err = analyzer.AnalyzeManifest(manifestPath)
-			if err != nil {
-				utils.Warning("Failed to analyze manifest: %v", err)
-			}
-		} else {
-			utils.Warning("AndroidManifest.xml not found, skipping manifest analysis")
-		}
-
-		// 4. Report
-		r := report.Report{
-			APKPath:  inputPath,
-			Results:  results,
-			Findings: findings,
-		}
-
-		// Display summary
-		utils.Success("Scan complete! Found %d secrets and %d security findings.", len(results), len(findings))
-
-		if outputFormat == "json" || outputFormat == "both" {
-			if err := report.SaveJSON(r, outputDir); err != nil {
-				utils.Error("Error saving JSON report: %v", err)
-			}
-		}
-
-		if outputFormat == "html" || outputFormat == "both" {
-			if err := report.SaveHTML(r, outputDir); err != nil {
-				utils.Error("Error saving HTML report: %v", err)
-			}
 		}
 	},
 }
